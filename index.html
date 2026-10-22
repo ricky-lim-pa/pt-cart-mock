@@ -199,12 +199,13 @@
 
     /* ========== CART (FPA layout, PT chrome) ========== */
     .banner {
-      background: #f8d9d4;
-      color: #8a4540;
-      font-size: 13px;
-      line-height: 1.3;
+      background: #4a4a4a;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.35;
       text-align: center;
-      padding: 10px 18px;
+      padding: 11px 16px;
+      font-weight: 500;
     }
 
     .cart-pad { padding: 12px 12px 0; }
@@ -328,8 +329,17 @@
     .totals-row {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       padding: 5px 4px;
-      color: #666;
+      color: #555;
+    }
+
+    .totals-row .ship-meta {
+      display: block;
+      font-size: 13px;
+      color: var(--pt);
+      margin-top: 2px;
+      font-weight: 500;
     }
 
     .totals-row.total {
@@ -341,17 +351,162 @@
       border-top: 1px solid #ddd;
     }
 
-    .checkout-wrap {
-      padding: 16px 12px 8px;
+    .ship-box {
+      margin-top: 14px;
+      border: 1px solid #d8d8d8;
+      border-radius: 4px;
       background: #fff;
+      padding: 12px 14px 12px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .ship-box .ship-body { flex: 1; min-width: 0; }
+
+    .ship-box .ship-label {
+      color: var(--pt);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .ship-box .ship-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .ship-box .ship-addr {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .ship-edit {
+      border: 0;
+      background: transparent;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid #ccc;
+      color: #888;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      margin-top: 2px;
+    }
+
+    .ship-edit svg { width: 14px; height: 14px; fill: #888; }
+
+    .upsells {
       margin-top: 12px;
-      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .upsell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #efefef;
+      border-radius: 4px;
+      padding: 12px 12px;
+    }
+
+    .upsell-text { flex: 1; min-width: 0; }
+
+    .upsell-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .upsell-link {
+      border: 0;
+      background: none;
+      padding: 0;
+      margin-top: 2px;
+      color: var(--pt);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .upsell-price {
+      font-size: 14px;
+      color: #444;
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle span {
+      position: absolute;
+      inset: 0;
+      background: #d0d0d0;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .toggle span::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      left: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      transition: transform 0.15s;
+    }
+
+    .toggle input:checked + span { background: var(--pt); }
+    .toggle input:checked + span::after { transform: translateX(20px); }
+
+    .upsell.hidden { display: none; }
+
+    .promo {
+      display: block;
+      text-align: center;
+      margin: 16px 0 4px;
+      color: #555;
+      font-size: 14px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .checkout-wrap {
+      padding: 12px 12px 8px;
+      background: #fff;
+      margin-top: 8px;
     }
 
     .place-order {
       width: 100%;
       border: 0;
-      border-radius: 8px;
+      border-radius: 6px;
       background: var(--pt);
       color: #fff;
       font-size: 18px;
@@ -800,12 +955,12 @@
       <section class="screen active" data-screen="cart">
         <div class="status"><span>9:04</span><span class="icons">LTE ▮▮▮▮ Wi‑Fi 84%</span></div>
         <header class="header">
-          <button type="button"><span class="chev">‹</span></button>
+          <button type="button"><span class="chev">‹</span> Back</button>
           <h2>Shopping Cart</h2>
-          <button type="button" class="right"><span class="icon-chat" aria-hidden="true"></span></button>
+          <button type="button" class="right"><span class="icon-chat" aria-hidden="true"></span> Next</button>
         </header>
         <div class="scroll">
-          <div class="banner">One low shipping price, however many photo tiles you order.</div>
+          <div class="banner">Add 3 photo tiles to your order for only $19 more.</div>
           <div class="cart-pad">
             <article class="card">
               <button class="remove" type="button" aria-label="Remove">×</button>
@@ -841,13 +996,68 @@
 
             <div class="totals">
               <div class="totals-row"><span>Subtotal</span><span id="subtotal">$9.00</span></div>
-              <div class="totals-row"><span>Shipping</span><span>$7.99</span></div>
+              <div class="totals-row">
+                <span>
+                  <span id="shipLabel">Standard Shipping</span>
+                  <span class="ship-meta" id="shipEta">Arrives in 6 - 7 days</span>
+                </span>
+                <span id="shipPrice">$7.99</span>
+              </div>
               <div class="totals-row"><span>Sales Tax</span><span id="tax">$0.90</span></div>
               <div class="totals-row total"><span>Total</span><span id="total">$17.89</span></div>
             </div>
+
+            <div class="ship-box">
+              <div class="ship-body">
+                <div class="ship-label">SHIPPING TO:</div>
+                <div class="ship-name">Ricky Lim</div>
+                <div class="ship-addr">1234 Example St<br />West Covina, CA 91791</div>
+              </div>
+              <button class="ship-edit" type="button" aria-label="Edit address">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+              </button>
+            </div>
+
+            <div class="upsells">
+              <div class="upsell" id="upsellGloss">
+                <div class="upsell-text">
+                  <div class="upsell-title">High Gloss Finish</div>
+                  <button class="upsell-link" type="button">Details</button>
+                </div>
+                <span class="upsell-price">Only $1</span>
+                <label class="toggle">
+                  <input type="checkbox" id="toggleGloss" />
+                  <span></span>
+                </label>
+              </div>
+              <div class="upsell">
+                <div class="upsell-text">
+                  <div class="upsell-title">Add Magic Level®</div>
+                  <button class="upsell-link" type="button">More info</button>
+                </div>
+                <span class="upsell-price">Only $2</span>
+                <label class="toggle">
+                  <input type="checkbox" id="toggleLevel" />
+                  <span></span>
+                </label>
+              </div>
+              <div class="upsell">
+                <div class="upsell-text">
+                  <div class="upsell-title">Express Shipping</div>
+                  <button class="upsell-link" type="button">Arrives in 4 days</button>
+                </div>
+                <span class="upsell-price">Add $7</span>
+                <label class="toggle">
+                  <input type="checkbox" id="toggleExpress" />
+                  <span></span>
+                </label>
+              </div>
+            </div>
+
+            <a class="promo" href="#">Do you have a promo code?</a>
           </div>
           <div class="checkout-wrap">
-            <button class="place-order" type="button">Place Order</button>
+            <button class="place-order" type="button">Continue</button>
           </div>
         </div>
       </section>
@@ -933,6 +1143,9 @@
       styleIndex: 0,
       qty: 1,
       mode: "cartEdit",
+      gloss: false,
+      level: false,
+      express: false,
     };
 
     const screens = {
@@ -956,9 +1169,18 @@
     function renderCart() {
       const size = sizes[state.sizeIndex];
       const style = styles[state.styleIndex];
-      const line = (size.deal + style.unit) * state.qty;
-      const tax = Math.round(line * 0.1 * 100) / 100;
-      const total = line + 7.99 + tax;
+      const glossOk = style.id === "premium";
+      if (!glossOk) state.gloss = false;
+
+      let line = (size.deal + style.unit) * state.qty;
+      if (glossOk && state.gloss) line += 1 * state.qty;
+      if (state.level) line += 2;
+
+      const shipBase = 7.99;
+      const ship = state.express ? shipBase + 7 : shipBase;
+      const taxBase = line + (state.express ? 7 : 0);
+      const tax = Math.round(taxBase * 0.1 * 100) / 100;
+      const total = line + ship + tax;
 
       document.getElementById("sizeLabel").textContent = size.label;
       const sizePrice = document.getElementById("sizePrice");
@@ -970,8 +1192,17 @@
       document.getElementById("qtyValue").textContent = String(state.qty);
       document.getElementById("dQtyValue").textContent = String(state.qty);
       document.getElementById("subtotal").textContent = money(line);
+      document.getElementById("shipLabel").textContent = state.express ? "Express Shipping" : "Standard Shipping";
+      document.getElementById("shipEta").textContent = state.express ? "Arrives in 4 days" : "Arrives in 6 - 7 days";
+      document.getElementById("shipPrice").textContent = money(ship);
       document.getElementById("tax").textContent = money(tax);
       document.getElementById("total").textContent = money(total);
+
+      const glossRow = document.getElementById("upsellGloss");
+      glossRow.classList.toggle("hidden", !glossOk);
+      document.getElementById("toggleGloss").checked = state.gloss;
+      document.getElementById("toggleLevel").checked = state.level;
+      document.getElementById("toggleExpress").checked = state.express;
     }
 
     function renderSizeOptions() {
@@ -1084,6 +1315,19 @@
     document.getElementById("qtyPlus").addEventListener("click", function () { bumpQty(1); });
     document.getElementById("dQtyMinus").addEventListener("click", function () { bumpQty(-1); });
     document.getElementById("dQtyPlus").addEventListener("click", function () { bumpQty(1); });
+
+    document.getElementById("toggleGloss").addEventListener("change", function (e) {
+      state.gloss = e.target.checked;
+      renderCart();
+    });
+    document.getElementById("toggleLevel").addEventListener("change", function (e) {
+      state.level = e.target.checked;
+      renderCart();
+    });
+    document.getElementById("toggleExpress").addEventListener("change", function (e) {
+      state.express = e.target.checked;
+      renderCart();
+    });
 
     renderCart();
     renderSizeOptions();
