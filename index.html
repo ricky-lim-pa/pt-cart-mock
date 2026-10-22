@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>PT Cart — phone mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pt: #ef6b5c;
+      --pt-deep: #e55a4a;
+      --text: #2a2a2a;
+      --muted: #7a7a7a;
+      --link: #3d7a8c;
+      --line: #e8e8e8;
+      --bg: #f2f2f2;
+      --size-bg: #d9e2e6;
+      --phone-w: 390px;
+      --phone-h: 844px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #1a1a1a;
+      color: var(--text);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 32px 16px 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .notes {
+      width: min(320px, 100%);
+      color: #c8c8c8;
+      padding-top: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .notes h1 { color: #fff; font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .notes ul { padding-left: 18px; margin: 10px 0; }
+    .notes li { margin: 5px 0; }
+    .notes strong { color: #fff; font-weight: 600; }
+    .notes a { color: #9ec9ff; }
+
+    /* —— Device chrome —— */
+    .device {
+      width: var(--phone-w);
+      height: var(--phone-h);
+      background: #111;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow:
+        0 0 0 2px #333,
+        0 24px 60px rgba(0, 0, 0, 0.55);
+      flex-shrink: 0;
+    }
+
+    .phone {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 34px;
+      background: #111;
+      border-radius: 0 0 20px 20px;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    .home-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 5px;
+      background: #111;
+      border-radius: 100px;
+      z-index: 40;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .status {
+      height: 54px;
+      padding: 14px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #fff;
+      background: var(--pt);
+      flex-shrink: 0;
+      z-index: 5;
+    }
+
+    .status .icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .header {
+      background: var(--pt);
+      color: #fff;
+      height: 44px;
+      display: grid;
+      grid-template-columns: 88px 1fr 88px;
+      align-items: center;
+      padding: 0 10px 6px;
+      flex-shrink: 0;
+      z-index: 5;
+    }
+
+    .header button {
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 6px 4px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      line-height: 1;
+    }
+
+    .header button.right {
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .header h2 {
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .chev {
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 0.8;
+      margin-top: -2px;
+    }
+
+    .icon-chat {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8'%3E%3Cpath d='M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 3.2V16H6.5A2.5 2.5 0 0 1 4 13.5v-7z'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+      background: var(--bg);
+    }
+
+    .screen.active { display: flex; }
+
+    .scroll {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 28px;
+    }
+
+    /* ========== CART (FPA layout, PT chrome) ========== */
+    .banner {
+      background: #f8d9d4;
+      color: #8a4540;
+      font-size: 13px;
+      line-height: 1.3;
+      text-align: center;
+      padding: 10px 18px;
+    }
+
+    .cart-pad { padding: 12px 12px 0; }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      padding: 14px 12px 12px;
+      position: relative;
+    }
+
+    .card-top { display: flex; gap: 12px; }
+
+    .thumb {
+      width: 78px;
+      height: 78px;
+      border-radius: 3px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #ddd;
+    }
+
+    .card-main { flex: 1; min-width: 0; padding-right: 16px; }
+
+    .product-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--pt-deep);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .remove {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      border: 0;
+      background: transparent;
+      font-size: 22px;
+      color: #999;
+      cursor: pointer;
+      line-height: 1;
+      font-weight: 300;
+    }
+
+    .attr { margin-bottom: 8px; }
+
+    .attr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 15px;
+      gap: 8px;
+    }
+
+    .attr-price { font-weight: 600; }
+    .attr-price.free { color: var(--pt); font-weight: 700; }
+
+    .change {
+      border: 0;
+      background: none;
+      padding: 0;
+      margin-top: 1px;
+      color: var(--link);
+      font-size: 15px;
+      font-family: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+
+    .card-foot {
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qty button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1.5px solid #b0b0b0;
+      background: #fff;
+      font-size: 20px;
+      line-height: 1;
+      color: #444;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-family: inherit;
+    }
+
+    .qty span { font-size: 16px; font-weight: 600; min-width: 14px; text-align: center; }
+
+    .edit-design {
+      border: 0;
+      background: none;
+      color: var(--link);
+      font-size: 15px;
+      font-family: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+
+    .totals {
+      margin: 16px 4px 0;
+      font-size: 15px;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 4px;
+      color: #666;
+    }
+
+    .totals-row.total {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 17px;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+    }
+
+    .checkout-wrap {
+      padding: 16px 12px 8px;
+      background: #fff;
+      margin-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .place-order {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      background: var(--pt);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 14px;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+    }
+
+    /* ========== SELECT SIZE (match screenshot) ========== */
+    .size-scroll {
+      background: var(--size-bg);
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .size-option {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      padding: 22px 20px 18px;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      min-height: 0;
+    }
+
+    .size-option + .size-option {
+      border-top: 4px solid #fff;
+    }
+
+    .size-option.selected::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 2px solid var(--pt);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .size-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .size-price {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .size-price .strike {
+      text-decoration: line-through;
+      color: #555;
+      margin-right: 8px;
+    }
+
+    .size-price .deal {
+      color: var(--pt);
+      font-weight: 700;
+    }
+
+    .size-visual {
+      display: inline-grid;
+      grid-template-columns: auto 18px;
+      grid-template-rows: auto auto;
+      gap: 0 6px;
+      align-items: stretch;
+      justify-items: center;
+    }
+
+    .size-frame {
+      grid-column: 1;
+      grid-row: 1;
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+    }
+
+    .size-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .size-frame.s8 { width: 132px; height: 132px; }
+    .size-frame.s125 { width: 188px; height: 188px; }
+
+    .dim-h {
+      grid-column: 1;
+      grid-row: 2;
+      width: 100%;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 6px;
+      position: relative;
+      padding-top: 6px;
+    }
+
+    .dim-h::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 1px;
+      background: #111;
+    }
+
+    .dim-h::after,
+    .dim-h .cap-l,
+    .dim-h .cap-r { /* caps via pseudo on ends */ }
+
+    .dim-v {
+      grid-column: 2;
+      grid-row: 1;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 13px;
+      font-weight: 500;
+      position: relative;
+      padding-right: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dim-v::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: #111;
+    }
+
+    /* ========== SELECT STYLE (match screenshot) ========== */
+    .style-scroll {
+      flex: 1;
+      overflow-y: auto;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .style-row {
+      flex: 1;
+      min-height: 220px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      border: 0;
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+      color: inherit;
+      text-align: left;
+      position: relative;
+    }
+
+    .style-photo {
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid #e5e5e5;
+      background: #eee;
+    }
+
+    .style-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 220px;
+    }
+
+    .style-photo.gloss img {
+      filter: contrast(1.05) saturate(1.05) brightness(1.08);
+    }
+
+    .style-photo.gloss::after {
+      content: "";
+      position: absolute;
+      inset: 18% 12% 28% 18%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.55), transparent 55%);
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+    }
+
+    .dots i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.55);
+      display: block;
+    }
+
+    .dots i.on { background: #fff; }
+
+    .style-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px 14px;
+      gap: 8px;
+    }
+
+    .style-check {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #c8c8c8;
+      display: grid;
+      place-items: center;
+      margin-bottom: 4px;
+    }
+
+    .style-row.selected .style-check {
+      background: var(--pt);
+      border-color: var(--pt);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .style-meta h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .style-meta p {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.35;
+      max-width: 140px;
+    }
+
+    .badge-new {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 56px;
+      height: 56px;
+      overflow: hidden;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .badge-new span {
+      position: absolute;
+      top: 10px;
+      right: -22px;
+      width: 90px;
+      background: #c4a35a;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 4px 0;
+      transform: rotate(45deg);
+    }
+
+    /* ========== PREVIEW / DESIGNER (match screenshot) ========== */
+    .preview-scroll {
+      flex: 1;
+      overflow-y: auto;
+      background: #ececec;
+      text-align: center;
+      padding: 14px 0 0;
+    }
+
+    .preview-hint {
+      font-size: 13px;
+      font-style: italic;
+      color: #8a8a8a;
+      margin-bottom: 18px;
+    }
+
+    .preview-carousel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 12px;
+      margin-bottom: 22px;
+    }
+
+    .preview-tile {
+      width: 248px;
+      height: 248px;
+      object-fit: cover;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+      background: #fff;
+    }
+
+    .preview-next {
+      width: 56px;
+      height: 248px;
+      border: 2px dashed #bdbdbd;
+      border-radius: 2px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .qty-label {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .qty-seg {
+      display: inline-flex;
+      border: 1px solid #c5c5c5;
+      background: #fff;
+      margin-bottom: 18px;
+    }
+
+    .qty-seg button,
+    .qty-seg span {
+      width: 48px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: #fff;
+      font-size: 18px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    .qty-seg button { cursor: pointer; }
+    .qty-seg span {
+      border-left: 1px solid #c5c5c5;
+      border-right: 1px solid #c5c5c5;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .preview-promo {
+      font-family: "Great Vibes", cursive;
+      font-size: 22px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .preview-chev {
+      color: #999;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .preview-room {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      opacity: 0.95;
+    }
+
+    .preview-tabbar {
+      background: var(--pt);
+      color: #fff;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: end;
+      padding: 8px 8px 22px;
+      flex-shrink: 0;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .preview-tabbar .tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.95;
+    }
+
+    .preview-tabbar svg { width: 24px; height: 24px; fill: #fff; }
+
+    .preview-tabbar .fab {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--pt);
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: 300;
+      margin: -22px auto 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      line-height: 1;
+    }
+
+    @media (max-width: 760px) {
+      .notes { order: 2; }
+      body { padding-top: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="notes">
+    <h1>PT cart phone mock</h1>
+    <p>iPhone-sized frame. Each screen matches your screenshots.</p>
+    <ul>
+      <li><strong>Cart</strong> — FPA attribute rows (Change / Edit Design), PT coral chrome</li>
+      <li><strong>Select Size / Style</strong> — your flow screens; Back → cart</li>
+      <li><strong>Edit Design</strong> — Preview, then Style → Size → cart</li>
+    </ul>
+    <p><a href="index.html">Poster wireframe</a></p>
+  </aside>
+
+  <div class="device">
+    <div class="phone" id="app">
+      <div class="notch" aria-hidden="true"></div>
+      <div class="home-bar" aria-hidden="true"></div>
+
+      <!-- CART -->
+      <section class="screen active" data-screen="cart">
+        <div class="status"><span>9:04</span><span class="icons">LTE ▮▮▮▮ Wi‑Fi 84%</span></div>
+        <header class="header">
+          <button type="button"><span class="chev">‹</span></button>
+          <h2>Shopping Cart</h2>
+          <button type="button" class="right"><span class="icon-chat" aria-hidden="true"></span></button>
+        </header>
+        <div class="scroll">
+          <div class="banner">One low shipping price, however many photo tiles you order.</div>
+          <div class="cart-pad">
+            <article class="card">
+              <button class="remove" type="button" aria-label="Remove">×</button>
+              <div class="card-top">
+                <img class="thumb" src="assets/poster-photo.png" alt="" />
+                <div class="card-main">
+                  <h3 class="product-name">Photo Tile</h3>
+                  <div class="attr">
+                    <div class="attr-row">
+                      <span>Size: <span id="sizeLabel">8×8</span></span>
+                      <span class="attr-price free" id="sizePrice">FREE</span>
+                    </div>
+                    <button class="change" type="button" id="goSize">Change</button>
+                  </div>
+                  <div class="attr">
+                    <div class="attr-row">
+                      <span>Style: <span id="styleLabel">Premium</span></span>
+                      <span class="attr-price" id="stylePrice">$9.00</span>
+                    </div>
+                    <button class="change" type="button" id="goStyle">Change</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-foot">
+                <div class="qty">
+                  <button type="button" id="qtyMinus" aria-label="Decrease">−</button>
+                  <span id="qtyValue">1</span>
+                  <button type="button" id="qtyPlus" aria-label="Increase">+</button>
+                </div>
+                <button class="edit-design" type="button" id="goDesign">Edit Design</button>
+              </div>
+            </article>
+
+            <div class="totals">
+              <div class="totals-row"><span>Subtotal</span><span id="subtotal">$9.00</span></div>
+              <div class="totals-row"><span>Shipping</span><span>$7.99</span></div>
+              <div class="totals-row"><span>Sales Tax</span><span id="tax">$0.90</span></div>
+              <div class="totals-row total"><span>Total</span><span id="total">$17.89</span></div>
+            </div>
+          </div>
+          <div class="checkout-wrap">
+            <button class="place-order" type="button">Place Order</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELECT SIZE -->
+      <section class="screen" data-screen="size">
+        <div class="status"><span>9:03</span><span class="icons">LTE ▮▮▮▮ Wi‑Fi 83%</span></div>
+        <header class="header">
+          <button type="button" id="sizeBack"><span class="chev">‹</span> Back</button>
+          <h2>Select Size</h2>
+          <button type="button" class="right"><span class="icon-chat"></span></button>
+        </header>
+        <div class="size-scroll" id="sizeOptions"></div>
+      </section>
+
+      <!-- SELECT STYLE -->
+      <section class="screen" data-screen="style">
+        <div class="status"><span>9:03</span><span class="icons">LTE ▮▮▮▮ Wi‑Fi 83%</span></div>
+        <header class="header">
+          <button type="button" id="styleBack"><span class="chev">‹</span> Back</button>
+          <h2>Select Style</h2>
+          <button type="button" class="right" id="styleNext">Next</button>
+        </header>
+        <div class="style-scroll" id="styleOptions"></div>
+      </section>
+
+      <!-- PREVIEW / EDIT DESIGN -->
+      <section class="screen" data-screen="design">
+        <div class="status"><span>9:03</span><span class="icons">LTE ▮▮▮▮ Wi‑Fi 83%</span></div>
+        <header class="header">
+          <button type="button" id="designBack"><span class="chev">‹</span> Back</button>
+          <h2>Preview</h2>
+          <button type="button" class="right" id="designNext"><span class="icon-chat"></span> Next</button>
+        </header>
+        <div class="preview-scroll">
+          <p class="preview-hint">Swipe to review tiles. Tap tile to make edits.</p>
+          <div class="preview-carousel">
+            <img class="preview-tile" src="assets/poster-photo.png" alt="Tile" />
+            <div class="preview-next" aria-hidden="true"></div>
+          </div>
+          <div class="qty-label">Quantity</div>
+          <div class="qty-seg">
+            <button type="button" id="dQtyMinus">−</button>
+            <span id="dQtyValue">1</span>
+            <button type="button" id="dQtyPlus">+</button>
+          </div>
+          <p class="preview-promo">Get excited! Your wall décor is almost done</p>
+          <div class="preview-chev">˅</div>
+          <img class="preview-room" src="assets/poster-photo.png" alt="" />
+        </div>
+        <nav class="preview-tabbar" aria-label="Tile tools">
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
+            Layouts
+          </div>
+          <div class="tab">
+            <div class="fab">+</div>
+            Add Tile
+          </div>
+          <div class="tab">
+            <svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM6 9h2v9H6V9z"/></svg>
+            Delete
+          </div>
+        </nav>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const sizes = [
+      { id: "8x8", label: "8×8", title: "8x8 PHOTO TILE", list: 9, deal: 0, free: true, frameClass: "s8", dim: "8\u2033" },
+      { id: "12.5", label: "12.5×12.5", title: "12.5x12.5 PHOTO TILE", list: 21, deal: 12, free: false, frameClass: "s125", dim: "12.5\u2033" },
+    ];
+
+    const styles = [
+      { id: "premium", label: "Premium", title: "Premium Tile", desc: "Digital print mounted on durable plastic", unit: 9 },
+      { id: "acrylic", label: "Acrylic Glass", title: "Acrylic Glass Tile", desc: "Sleek and lightweight", unit: 15, badge: true, gloss: true },
+      { id: "glass", label: "Glass", title: "Glass Tile", desc: "Classic glass finish", unit: 18, gloss: true },
+    ];
+
+    const state = {
+      sizeIndex: 0,
+      styleIndex: 0,
+      qty: 1,
+      mode: "cartEdit",
+    };
+
+    const screens = {
+      cart: document.querySelector('[data-screen="cart"]'),
+      size: document.querySelector('[data-screen="size"]'),
+      style: document.querySelector('[data-screen="style"]'),
+      design: document.querySelector('[data-screen="design"]'),
+    };
+
+    function show(name) {
+      Object.keys(screens).forEach(function (key) {
+        screens[key].classList.toggle("active", key === name);
+      });
+    }
+
+    function money(n) {
+      if (n <= 0) return "FREE";
+      return "$" + n.toFixed(2);
+    }
+
+    function renderCart() {
+      const size = sizes[state.sizeIndex];
+      const style = styles[state.styleIndex];
+      const line = (size.deal + style.unit) * state.qty;
+      const tax = Math.round(line * 0.1 * 100) / 100;
+      const total = line + 7.99 + tax;
+
+      document.getElementById("sizeLabel").textContent = size.label;
+      const sizePrice = document.getElementById("sizePrice");
+      sizePrice.textContent = size.free ? "FREE" : money(size.deal);
+      sizePrice.classList.toggle("free", !!size.free);
+
+      document.getElementById("styleLabel").textContent = style.label;
+      document.getElementById("stylePrice").textContent = money(style.unit);
+      document.getElementById("qtyValue").textContent = String(state.qty);
+      document.getElementById("dQtyValue").textContent = String(state.qty);
+      document.getElementById("subtotal").textContent = money(line);
+      document.getElementById("tax").textContent = money(tax);
+      document.getElementById("total").textContent = money(total);
+    }
+
+    function renderSizeOptions() {
+      const root = document.getElementById("sizeOptions");
+      root.innerHTML = "";
+      sizes.forEach(function (size, index) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "size-option" + (index === state.sizeIndex ? " selected" : "");
+        const dealText = size.free ? "FREE" : money(size.deal);
+        btn.innerHTML =
+          '<div class="size-title">' + size.title + "</div>" +
+          '<div class="size-price"><span class="strike">$' + size.list + '</span><span class="deal">' + dealText + "</span></div>" +
+          '<div class="size-visual">' +
+            '<div class="size-frame ' + size.frameClass + '"><img src="assets/poster-photo.png" alt="" /></div>' +
+            '<div class="dim-v">' + size.dim + "</div>" +
+            '<div class="dim-h">' + size.dim + "</div>" +
+          "</div>";
+        btn.addEventListener("click", function () {
+          state.sizeIndex = index;
+          renderSizeOptions();
+          renderCart();
+          state.mode = "cartEdit";
+          show("cart");
+        });
+        root.appendChild(btn);
+      });
+    }
+
+    function renderStyleOptions() {
+      const root = document.getElementById("styleOptions");
+      root.innerHTML = "";
+      styles.forEach(function (style, index) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "style-row" + (index === state.styleIndex ? " selected" : "");
+        btn.innerHTML =
+          (style.badge ? '<div class="badge-new"><span>NEW!</span></div>' : "") +
+          '<div class="style-photo' + (style.gloss ? " gloss" : "") + '">' +
+            '<img src="assets/poster-photo.png" alt="" />' +
+            '<div class="dots"><i class="on"></i><i></i><i></i></div>' +
+          "</div>" +
+          '<div class="style-meta">' +
+            '<div class="style-check">' + (index === state.styleIndex ? "✓" : "") + "</div>" +
+            "<h3>" + style.title + "</h3>" +
+            "<p>" + style.desc + "</p>" +
+          "</div>";
+        btn.addEventListener("click", function () {
+          state.styleIndex = index;
+          renderStyleOptions();
+          renderCart();
+        });
+        root.appendChild(btn);
+      });
+    }
+
+    document.getElementById("goSize").addEventListener("click", function () {
+      state.mode = "cartEdit";
+      renderSizeOptions();
+      show("size");
+    });
+
+    document.getElementById("goStyle").addEventListener("click", function () {
+      state.mode = "cartEdit";
+      renderStyleOptions();
+      show("style");
+    });
+
+    document.getElementById("goDesign").addEventListener("click", function () {
+      state.mode = "editDesign";
+      show("design");
+    });
+
+    document.getElementById("sizeBack").addEventListener("click", function () {
+      show(state.mode === "editDesign" ? "style" : "cart");
+    });
+
+    document.getElementById("styleBack").addEventListener("click", function () {
+      show(state.mode === "editDesign" ? "design" : "cart");
+    });
+
+    document.getElementById("styleNext").addEventListener("click", function () {
+      if (state.mode === "editDesign") {
+        renderSizeOptions();
+        show("size");
+      } else {
+        show("cart");
+      }
+    });
+
+    document.getElementById("designBack").addEventListener("click", function () {
+      state.mode = "cartEdit";
+      show("cart");
+    });
+
+    document.getElementById("designNext").addEventListener("click", function () {
+      state.mode = "editDesign";
+      renderStyleOptions();
+      show("style");
+    });
+
+    function bumpQty(delta) {
+      const next = state.qty + delta;
+      if (next < 1) return;
+      state.qty = next;
+      renderCart();
+    }
+
+    document.getElementById("qtyMinus").addEventListener("click", function () { bumpQty(-1); });
+    document.getElementById("qtyPlus").addEventListener("click", function () { bumpQty(1); });
+    document.getElementById("dQtyMinus").addEventListener("click", function () { bumpQty(-1); });
+    document.getElementById("dQtyPlus").addEventListener("click", function () { bumpQty(1); });
+
+    renderCart();
+    renderSizeOptions();
+    renderStyleOptions();
+  </script>
+</body>
+</html>
