@@ -254,11 +254,40 @@
 
     .line-price.paid { color: var(--text); }
 
+    /* Size / Style sit in the PT line stack; Change uses same link style as Preview | Edit */
+    .meta {
+      margin: 0 0 4px;
+      font-size: 14px;
+      color: #444;
+      line-height: 1.35;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .meta-row + .meta-row { margin-top: 2px; }
+
+    .change {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--link);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
     .preview-edit {
       display: flex;
       align-items: center;
       gap: 0;
-      margin-top: 2px;
+      margin-top: 6px;
       font-size: 14px;
       font-weight: 600;
     }
@@ -898,9 +927,9 @@
     <h1>PT cart phone mock</h1>
     <p>iPhone-sized frame. Each screen matches your screenshots.</p>
     <ul>
-      <li><strong>Cart</strong> — original PT line: title (size+style), price, Preview | Edit. No qty, no X</li>
-      <li><strong>Preview</strong> — Preview only; Back → cart</li>
-      <li><strong>Edit</strong> — Preview → Select Style → Select Size → cart (size/style live here)</li>
+      <li><strong>Cart</strong> — PT line: title + price, Size/Style + Change, Preview | Edit. No qty, no X</li>
+      <li><strong>Change</strong> on Size/Style → existing Select screens; Back → cart</li>
+      <li><strong>Preview</strong> — view only. <strong>Edit</strong> — full design flow again</li>
     </ul>
     <p>Live: <a href="https://ricky-lim-pa.github.io/pt-cart-mock/">ricky-lim-pa.github.io/pt-cart-mock</a></p>
   </aside>
@@ -928,6 +957,16 @@
                   <div class="title-row">
                     <h3 class="product-name" id="productName">8×8 Premium Tile</h3>
                     <span class="line-price" id="linePrice">FREE</span>
+                  </div>
+                  <div class="meta">
+                    <div class="meta-row">
+                      <span>Size: <span id="sizeLabel">8×8</span></span>
+                      <button class="change" type="button" id="goSize">Change</button>
+                    </div>
+                    <div class="meta-row">
+                      <span>Style: <span id="styleLabel">Premium</span></span>
+                      <button class="change" type="button" id="goStyle">Change</button>
+                    </div>
                   </div>
                   <div class="preview-edit">
                     <button type="button" id="goPreview">Preview</button>
@@ -1130,6 +1169,8 @@
       const linePrice = document.getElementById("linePrice");
       linePrice.textContent = money(line);
       linePrice.classList.toggle("paid", line > 0);
+      document.getElementById("sizeLabel").textContent = size.label;
+      document.getElementById("styleLabel").textContent = style.label;
       document.getElementById("dQtyValue").textContent = String(state.qty);
       document.getElementById("subtotal").textContent = money(line);
       document.getElementById("shipLabel").textContent = state.express ? "Express Shipping" : "Standard Shipping";
@@ -1202,13 +1243,26 @@
       });
     }
 
+    // Size / Style Change → existing flow screens; Back returns to cart.
+    document.getElementById("goSize").addEventListener("click", function () {
+      state.mode = "cartEdit";
+      renderSizeOptions();
+      show("size");
+    });
+
+    document.getElementById("goStyle").addEventListener("click", function () {
+      state.mode = "cartEdit";
+      renderStyleOptions();
+      show("style");
+    });
+
     document.getElementById("goPreview").addEventListener("click", function () {
       state.mode = "previewOnly";
       renderCart();
       show("design");
     });
 
-    // Edit walks the create flow so size/style change on existing screens.
+    // Edit → design flow again (Preview → Style → Size → cart).
     document.getElementById("goDesign").addEventListener("click", function () {
       state.mode = "editDesign";
       renderCart();
@@ -1216,16 +1270,23 @@
     });
 
     document.getElementById("sizeBack").addEventListener("click", function () {
-      show("style");
+      show(state.mode === "editDesign" ? "style" : "cart");
     });
 
     document.getElementById("styleBack").addEventListener("click", function () {
-      show("design");
+      show(state.mode === "editDesign" ? "design" : "cart");
     });
 
     document.getElementById("styleNext").addEventListener("click", function () {
-      renderSizeOptions();
-      show("size");
+      if (state.mode === "editDesign") {
+        renderSizeOptions();
+        show("size");
+      } else {
+        // Confirm style from cart Change, return to cart
+        state.mode = "cartEdit";
+        renderCart();
+        show("cart");
+      }
     });
 
     document.getElementById("designBack").addEventListener("click", function () {
