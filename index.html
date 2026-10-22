@@ -212,45 +212,48 @@
 
     .card {
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-      padding: 14px 12px 12px;
-      position: relative;
+      border-radius: 4px;
+      border: 1px solid #e5e5e5;
+      padding: 12px;
     }
 
-    .card-top { display: flex; gap: 12px; }
+    .card-top { display: flex; gap: 12px; align-items: flex-start; }
 
     .thumb {
-      width: 78px;
-      height: 78px;
-      border-radius: 3px;
+      width: 72px;
+      height: 72px;
+      border-radius: 2px;
       object-fit: cover;
       flex-shrink: 0;
       background: #ddd;
     }
 
-    .card-main { flex: 1; min-width: 0; padding-right: 16px; }
+    .card-main { flex: 1; min-width: 0; }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
 
     .product-name {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
-      color: var(--pt-deep);
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
     }
 
-    .remove {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      border: 0;
-      background: transparent;
-      font-size: 22px;
-      color: #999;
-      cursor: pointer;
-      line-height: 1;
-      font-weight: 300;
+    .line-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--pt);
+      white-space: nowrap;
     }
+
+    .line-price.paid { color: var(--text); }
 
     .attr { margin-bottom: 8px; }
 
@@ -258,11 +261,12 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      font-size: 15px;
+      font-size: 14px;
       gap: 8px;
+      color: #444;
     }
 
-    .attr-price { font-weight: 600; }
+    .attr-price { font-weight: 600; color: #333; }
     .attr-price.free { color: var(--pt); font-weight: 700; }
 
     .change {
@@ -271,54 +275,37 @@
       padding: 0;
       margin-top: 1px;
       color: var(--link);
-      font-size: 15px;
+      font-size: 14px;
       font-family: inherit;
       text-decoration: underline;
       text-underline-offset: 2px;
       cursor: pointer;
     }
 
-    .card-foot {
-      margin-top: 10px;
-      padding-top: 12px;
-      border-top: 1px solid var(--line);
+    .preview-edit {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 0;
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 600;
     }
 
-    .qty {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .qty button {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1.5px solid #b0b0b0;
-      background: #fff;
-      font-size: 20px;
-      line-height: 1;
-      color: #444;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      font-family: inherit;
-    }
-
-    .qty span { font-size: 16px; font-weight: 600; min-width: 14px; text-align: center; }
-
-    .edit-design {
+    .preview-edit button {
       border: 0;
       background: none;
+      padding: 0;
       color: var(--link);
-      font-size: 15px;
+      font-size: 14px;
+      font-weight: 600;
       font-family: inherit;
-      text-decoration: underline;
-      text-underline-offset: 2px;
       cursor: pointer;
+    }
+
+    .preview-edit .sep {
+      color: var(--link);
+      margin: 0 6px;
+      font-weight: 600;
     }
 
     .totals {
@@ -939,9 +926,9 @@
     <h1>PT cart phone mock</h1>
     <p>iPhone-sized frame. Each screen matches your screenshots.</p>
     <ul>
-      <li><strong>Cart</strong> — FPA attribute rows (Change / Edit Design), PT coral chrome</li>
-      <li><strong>Select Size / Style</strong> — your flow screens; Back → cart</li>
-      <li><strong>Edit Design</strong> — Preview, then Style → Size → cart</li>
+      <li><strong>Cart</strong> — original PT line (Preview | Edit), plus Size/Style Change. No qty, no X</li>
+      <li><strong>Change</strong> — Select Size / Style; Back → cart</li>
+      <li><strong>Preview</strong> — Preview only. <strong>Edit</strong> — full Style → Size → cart flow</li>
     </ul>
     <p>Live: <a href="https://ricky-lim-pa.github.io/pt-cart-mock/">ricky-lim-pa.github.io/pt-cart-mock</a></p>
   </aside>
@@ -963,11 +950,13 @@
           <div class="banner">Add 3 photo tiles to your order for only $19 more.</div>
           <div class="cart-pad">
             <article class="card">
-              <button class="remove" type="button" aria-label="Remove">×</button>
               <div class="card-top">
                 <img class="thumb" src="assets/poster-photo.png" alt="" />
                 <div class="card-main">
-                  <h3 class="product-name">Photo Tile</h3>
+                  <div class="title-row">
+                    <h3 class="product-name" id="productName">8×8 Premium Tile</h3>
+                    <span class="line-price" id="linePrice">FREE</span>
+                  </div>
                   <div class="attr">
                     <div class="attr-row">
                       <span>Size: <span id="sizeLabel">8×8</span></span>
@@ -982,15 +971,12 @@
                     </div>
                     <button class="change" type="button" id="goStyle">Change</button>
                   </div>
+                  <div class="preview-edit">
+                    <button type="button" id="goPreview">Preview</button>
+                    <span class="sep">|</span>
+                    <button type="button" id="goDesign">Edit</button>
+                  </div>
                 </div>
-              </div>
-              <div class="card-foot">
-                <div class="qty">
-                  <button type="button" id="qtyMinus" aria-label="Decrease">−</button>
-                  <span id="qtyValue">1</span>
-                  <button type="button" id="qtyPlus" aria-label="Increase">+</button>
-                </div>
-                <button class="edit-design" type="button" id="goDesign">Edit Design</button>
               </div>
             </article>
 
@@ -1090,7 +1076,7 @@
         <header class="header">
           <button type="button" id="designBack"><span class="chev">‹</span> Back</button>
           <h2>Preview</h2>
-          <button type="button" class="right" id="designNext"><span class="icon-chat"></span> Next</button>
+          <button type="button" class="right" id="designNext"><span class="icon-chat"></span> <span id="designNextLabel">Next</span></button>
         </header>
         <div class="preview-scroll">
           <p class="preview-hint">Swipe to review tiles. Tap tile to make edits.</p>
@@ -1182,6 +1168,11 @@
       const tax = Math.round(taxBase * 0.1 * 100) / 100;
       const total = line + ship + tax;
 
+      document.getElementById("productName").textContent = size.label + " " + style.label + " Tile";
+      const linePrice = document.getElementById("linePrice");
+      linePrice.textContent = money(line);
+      linePrice.classList.toggle("paid", line > 0);
+
       document.getElementById("sizeLabel").textContent = size.label;
       const sizePrice = document.getElementById("sizePrice");
       sizePrice.textContent = size.free ? "FREE" : money(size.deal);
@@ -1189,7 +1180,6 @@
 
       document.getElementById("styleLabel").textContent = style.label;
       document.getElementById("stylePrice").textContent = money(style.unit);
-      document.getElementById("qtyValue").textContent = String(state.qty);
       document.getElementById("dQtyValue").textContent = String(state.qty);
       document.getElementById("subtotal").textContent = money(line);
       document.getElementById("shipLabel").textContent = state.express ? "Express Shipping" : "Standard Shipping";
@@ -1203,6 +1193,9 @@
       document.getElementById("toggleGloss").checked = state.gloss;
       document.getElementById("toggleLevel").checked = state.level;
       document.getElementById("toggleExpress").checked = state.express;
+
+      const nextLabel = document.getElementById("designNextLabel");
+      if (nextLabel) nextLabel.textContent = state.mode === "editDesign" ? "Next" : "Checkout";
     }
 
     function renderSizeOptions() {
@@ -1271,8 +1264,15 @@
       show("style");
     });
 
+    document.getElementById("goPreview").addEventListener("click", function () {
+      state.mode = "previewOnly";
+      renderCart();
+      show("design");
+    });
+
     document.getElementById("goDesign").addEventListener("click", function () {
       state.mode = "editDesign";
+      renderCart();
       show("design");
     });
 
@@ -1295,13 +1295,19 @@
 
     document.getElementById("designBack").addEventListener("click", function () {
       state.mode = "cartEdit";
+      renderCart();
       show("cart");
     });
 
     document.getElementById("designNext").addEventListener("click", function () {
-      state.mode = "editDesign";
-      renderStyleOptions();
-      show("style");
+      if (state.mode === "editDesign") {
+        renderStyleOptions();
+        show("style");
+      } else {
+        state.mode = "cartEdit";
+        renderCart();
+        show("cart");
+      }
     });
 
     function bumpQty(delta) {
@@ -1311,8 +1317,6 @@
       renderCart();
     }
 
-    document.getElementById("qtyMinus").addEventListener("click", function () { bumpQty(-1); });
-    document.getElementById("qtyPlus").addEventListener("click", function () { bumpQty(1); });
     document.getElementById("dQtyMinus").addEventListener("click", function () { bumpQty(-1); });
     document.getElementById("dQtyPlus").addEventListener("click", function () { bumpQty(1); });
 
