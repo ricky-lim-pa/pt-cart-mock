@@ -197,7 +197,7 @@
       padding-bottom: 28px;
     }
 
-    /* ========== CART (FPA layout, PT chrome) ========== */
+    /* ========== CART (original PT line item) ========== */
     .banner {
       background: #4a4a4a;
       color: #fff;
@@ -212,16 +212,15 @@
 
     .card {
       background: #fff;
-      border-radius: 4px;
-      border: 1px solid #e5e5e5;
-      padding: 12px;
+      padding: 10px 4px 12px;
+      border-bottom: 1px solid #e8e8e8;
     }
 
     .card-top { display: flex; gap: 12px; align-items: flex-start; }
 
     .thumb {
-      width: 72px;
-      height: 72px;
+      width: 70px;
+      height: 70px;
       border-radius: 2px;
       object-fit: cover;
       flex-shrink: 0;
@@ -235,7 +234,7 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .product-name {
@@ -255,38 +254,11 @@
 
     .line-price.paid { color: var(--text); }
 
-    .attr { margin-bottom: 8px; }
-
-    .attr-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 14px;
-      gap: 8px;
-      color: #444;
-    }
-
-    .attr-price { font-weight: 600; color: #333; }
-    .attr-price.free { color: var(--pt); font-weight: 700; }
-
-    .change {
-      border: 0;
-      background: none;
-      padding: 0;
-      margin-top: 1px;
-      color: var(--link);
-      font-size: 14px;
-      font-family: inherit;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      cursor: pointer;
-    }
-
     .preview-edit {
       display: flex;
       align-items: center;
       gap: 0;
-      margin-top: 4px;
+      margin-top: 2px;
       font-size: 14px;
       font-weight: 600;
     }
@@ -926,9 +898,9 @@
     <h1>PT cart phone mock</h1>
     <p>iPhone-sized frame. Each screen matches your screenshots.</p>
     <ul>
-      <li><strong>Cart</strong> — original PT line (Preview | Edit), plus Size/Style Change. No qty, no X</li>
-      <li><strong>Change</strong> — Select Size / Style; Back → cart</li>
-      <li><strong>Preview</strong> — Preview only. <strong>Edit</strong> — full Style → Size → cart flow</li>
+      <li><strong>Cart</strong> — original PT line: title (size+style), price, Preview | Edit. No qty, no X</li>
+      <li><strong>Preview</strong> — Preview only; Back → cart</li>
+      <li><strong>Edit</strong> — Preview → Select Style → Select Size → cart (size/style live here)</li>
     </ul>
     <p>Live: <a href="https://ricky-lim-pa.github.io/pt-cart-mock/">ricky-lim-pa.github.io/pt-cart-mock</a></p>
   </aside>
@@ -956,20 +928,6 @@
                   <div class="title-row">
                     <h3 class="product-name" id="productName">8×8 Premium Tile</h3>
                     <span class="line-price" id="linePrice">FREE</span>
-                  </div>
-                  <div class="attr">
-                    <div class="attr-row">
-                      <span>Size: <span id="sizeLabel">8×8</span></span>
-                      <span class="attr-price free" id="sizePrice">FREE</span>
-                    </div>
-                    <button class="change" type="button" id="goSize">Change</button>
-                  </div>
-                  <div class="attr">
-                    <div class="attr-row">
-                      <span>Style: <span id="styleLabel">Premium</span></span>
-                      <span class="attr-price" id="stylePrice">$9.00</span>
-                    </div>
-                    <button class="change" type="button" id="goStyle">Change</button>
                   </div>
                   <div class="preview-edit">
                     <button type="button" id="goPreview">Preview</button>
@@ -1172,14 +1130,6 @@
       const linePrice = document.getElementById("linePrice");
       linePrice.textContent = money(line);
       linePrice.classList.toggle("paid", line > 0);
-
-      document.getElementById("sizeLabel").textContent = size.label;
-      const sizePrice = document.getElementById("sizePrice");
-      sizePrice.textContent = size.free ? "FREE" : money(size.deal);
-      sizePrice.classList.toggle("free", !!size.free);
-
-      document.getElementById("styleLabel").textContent = style.label;
-      document.getElementById("stylePrice").textContent = money(style.unit);
       document.getElementById("dQtyValue").textContent = String(state.qty);
       document.getElementById("subtotal").textContent = money(line);
       document.getElementById("shipLabel").textContent = state.express ? "Express Shipping" : "Standard Shipping";
@@ -1252,24 +1202,13 @@
       });
     }
 
-    document.getElementById("goSize").addEventListener("click", function () {
-      state.mode = "cartEdit";
-      renderSizeOptions();
-      show("size");
-    });
-
-    document.getElementById("goStyle").addEventListener("click", function () {
-      state.mode = "cartEdit";
-      renderStyleOptions();
-      show("style");
-    });
-
     document.getElementById("goPreview").addEventListener("click", function () {
       state.mode = "previewOnly";
       renderCart();
       show("design");
     });
 
+    // Edit walks the create flow so size/style change on existing screens.
     document.getElementById("goDesign").addEventListener("click", function () {
       state.mode = "editDesign";
       renderCart();
@@ -1277,20 +1216,16 @@
     });
 
     document.getElementById("sizeBack").addEventListener("click", function () {
-      show(state.mode === "editDesign" ? "style" : "cart");
+      show("style");
     });
 
     document.getElementById("styleBack").addEventListener("click", function () {
-      show(state.mode === "editDesign" ? "design" : "cart");
+      show("design");
     });
 
     document.getElementById("styleNext").addEventListener("click", function () {
-      if (state.mode === "editDesign") {
-        renderSizeOptions();
-        show("size");
-      } else {
-        show("cart");
-      }
+      renderSizeOptions();
+      show("size");
     });
 
     document.getElementById("designBack").addEventListener("click", function () {
